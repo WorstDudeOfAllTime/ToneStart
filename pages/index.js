@@ -1,11 +1,45 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from '@next/font/google'
-import styles from '../styles/Home.module.css'
-
-const inter = Inter({ subsets: ['latin'] })
-
+import Head from 'next/head';
+import Image from 'next/image';
+import styles from '../styles/Home.module.css';
+import * as Tone from 'tone';
+import { useEffect, useState } from 'react';
+import Circle from './../components/Circle';
 export default function Home() {
+  const [innerHeight, setInnerHeight] = useState(null);
+  const [innerWidth, setInnerWidth] = useState(null);
+  const [synth, setSynth] = useState(null);
+  const [synthOne, setSynthOne] = useState(null);
+  const [synthTwo, setSynthTwo] = useState(null);
+  const [synthThree, setSynthThree] = useState(null);
+  const [clicked, setClicked] = useState(false);
+  const [noteArray, setNoteArray] = useState(null);
+  let theGroup = [
+    20, 27, 32, 18, 40, 16, 25, 36, 37, 31, 24, 24, 29, 30, 31, 22, 23, 38, 38,
+    17,
+  ];
+  //E2 is low A5 is high
+  let cMaj = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+  let cMin = ['C', 'D', 'D#', 'F', 'G', 'G#', 'A#'];
+  let octaveArray = ['3', '4'];
+  let colorArray = [
+    'red',
+    'blue',
+    'green',
+    'yellow',
+    'purple',
+    'white',
+    'pink',
+    'orange',
+  ];
+  useEffect(() => {
+    setInnerHeight((prevHeight) => {
+      return window.innerHeight;
+    });
+    setInnerWidth((prevWidth) => {
+      return window.innerWidth;
+    });
+  }, [clicked]);
+
   return (
     <>
       <Head>
@@ -15,109 +49,105 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <div className={styles.description}>
-          <p>
-            Get started by editing&nbsp;
-            <code className={styles.code}>pages/index.js</code>
-          </p>
-          <div>
-            <a
-              href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
+        {clicked ? (
+          <svg style={{ height: '100vh', width: ' 100vw' }}>
+            {theGroup
+              .map((age) => {
+                if (age < 26) {
+                  return (
+                    <Circle
+                      setX={Math.floor(Math.random() * innerWidth)}
+                      setY={Math.floor(Math.random() * innerHeight)}
+                      theNote={noteArray}
+                      innerHeight={innerHeight}
+                      innerWidth={innerWidth}
+                      size={'25'}
+                      octave={'3'}
+                      color={colorArray[Math.floor(Math.random() * 7)]}
+                      speed={Math.floor(Math.random() * 100)}
+                    />
+                  );
+                } else if (age >= 26 <= 30) {
+                  return (
+                    <Circle
+                      setX={100}
+                      setY={100}
+                      theNote={noteArray}
+                      innerHeight={innerHeight}
+                      innerWidth={innerWidth}
+                      size={'25'}
+                      octave={'4'}
+                      color={colorArray[Math.floor(Math.random() * 7)]}
+                      speed={Math.floor(Math.random() * 75)}
+                    />
+                  );
+                } else if (age > 30) {
+                  return (
+                    <Circle
+                      setX={100}
+                      setY={100}
+                      theNote={noteArray}
+                      innerHeight={innerHeight}
+                      innerWidth={innerWidth}
+                      size={'25'}
+                      octave={'5'}
+                      color={colorArray[Math.floor(Math.random() * 7)]}
+                      speed={Math.floor(Math.random() * 50)}
+                    />
+                  );
+                }
+              })}
+          </svg>
+        ) : (
+          <>
+            <button
+              style={{
+                height: ' 100px',
+                width: '200px',
+                borderRadius: '10px',
+                fontSize: '15px',
+                cursor: 'pointer',
+              }}
+              onClick={() => {
+                setNoteArray(cMaj);
+              }}
             >
-              By{' '}
-              <Image
-                src="/vercel.svg"
-                alt="Vercel Logo"
-                className={styles.vercelLogo}
-                width={100}
-                height={24}
-                priority
-              />
-            </a>
-          </div>
-        </div>
-
-        <div className={styles.center}>
-          <Image
-            className={styles.logo}
-            src="/next.svg"
-            alt="Next.js Logo"
-            width={180}
-            height={37}
-            priority
-          />
-          <div className={styles.thirteen}>
-            <Image
-              src="/thirteen.svg"
-              alt="13"
-              width={40}
-              height={31}
-              priority
-            />
-          </div>
-        </div>
-
-        <div className={styles.grid}>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Docs <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Find in-depth information about Next.js features and&nbsp;API.
-            </p>
-          </a>
-
-          <a
-            href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Learn <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Learn about Next.js in an interactive course with&nbsp;quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Templates <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Discover and deploy boilerplate example Next.js&nbsp;projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Deploy <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Instantly deploy your Next.js site to a shareable URL
-              with&nbsp;Vercel.
-            </p>
-          </a>
-        </div>
+              Major
+            </button>
+            <button
+              style={{
+                height: ' 100px',
+                width: '200px',
+                borderRadius: '10px',
+                fontSize: '15px',
+                cursor: 'pointer',
+              }}
+              onClick={() => {
+                setNoteArray(cMin);
+              }}
+            >
+              Minor
+            </button>
+            <button
+              style={{
+                height: ' 300px',
+                width: '400px',
+                borderRadius: '15px',
+                fontSize: '50px',
+                cursor: 'pointer',
+              }}
+              onClick={() => {
+                if (noteArray === null) {
+                  setNoteArray(cMaj);
+                }
+                setClicked(!clicked);
+              }}
+            >
+              SET IT OFF
+            </button>
+          </>
+        )}
       </main>
     </>
-  )
+  );
 }
