@@ -1,25 +1,25 @@
 .backDrop {
   animation-name: dropGlow;
-  animation-duration: 2s;
+  animation-duration: 1s;
   animation-iteration-count: infinite;
+  transition: all ease-in-out .2s;
 }
 
-
-
-@keyframes dropGlow{
-  0%{
-    filter:drop-shadow(0 0 5px red)
+@keyframes dropGlow {
+  0% {
+    filter: drop-shadow(0 0 5px red);
   }
-  25%{
-    filter:drop-shadow(0 0 10px red)
+  25% {
+    filter: drop-shadow(10px 10px 10px red) drop-shadow(10px 10pxpx 10px red);
   }
   50% {
-    filter:drop-shadow(0 0 20px lightblue)
+    filter: drop-shadow(20px 20px 20px lightblue) drop-shadow(20px 20px 20px lightblue)
+      drop-shadow(20px 20px 20px lightblue);
   }
   75% {
-    filter:drop-shadow(0 0 10px red)
+    filter: drop-shadow(10px 10px 10px red) drop-shadow(10px 10px 10px red);
   }
   100% {
-    filter:drop-shadow(0 0 5px red)
+    filter: drop-shadow(0 0 5px red);
   }
 }

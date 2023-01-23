@@ -13,10 +13,9 @@ export default function Home() {
   const [synthThree, setSynthThree] = useState(null);
   const [clicked, setClicked] = useState(false);
   const [noteArray, setNoteArray] = useState(null);
-  let theGroup = [
-    20, 27, 32, 18, 40, 16, 25, 36, 37, 31, 24, 24, 29, 30, 31, 22, 23, 38, 38,
-    17,
-  ];
+  const [flip, setFlip] = useState(false);
+  const [shadow, setShadow] = useState(20);
+  const [x1Move, setX1Move] = useState(0);
   //E2 is low A5 is high
   let cMaj = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
   let cMin = ['C', 'D', 'D#', 'F', 'G', 'G#', 'A#'];
@@ -31,6 +30,7 @@ export default function Home() {
     'pink',
     'orange',
   ];
+
   useEffect(() => {
     setInnerHeight((prevHeight) => {
       return window.innerHeight;
@@ -40,6 +40,13 @@ export default function Home() {
     });
   }, [clicked]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setX1Move((prev) => {
+        return prev + 10;
+      })
+    }, 50);
+  }, [x1Move]);
   return (
     <>
       <Head>
@@ -48,105 +55,114 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
-        {clicked ? (
-          <svg style={{ height: '100vh', width: ' 100vw' }}>
-            {theGroup
-              .map((age) => {
-                if (age < 26) {
-                  return (
-                    <Circle
-                      setX={Math.floor(Math.random() * innerWidth)}
-                      setY={Math.floor(Math.random() * innerHeight)}
-                      theNote={noteArray}
-                      innerHeight={innerHeight}
-                      innerWidth={innerWidth}
-                      size={'25'}
-                      octave={'3'}
-                      color={colorArray[Math.floor(Math.random() * 7)]}
-                      speed={Math.floor(Math.random() * 100)}
-                    />
-                  );
-                } else if (age >= 26 <= 30) {
-                  return (
-                    <Circle
-                      setX={100}
-                      setY={100}
-                      theNote={noteArray}
-                      innerHeight={innerHeight}
-                      innerWidth={innerWidth}
-                      size={'25'}
-                      octave={'4'}
-                      color={colorArray[Math.floor(Math.random() * 7)]}
-                      speed={Math.floor(Math.random() * 75)}
-                    />
-                  );
-                } else if (age > 30) {
-                  return (
-                    <Circle
-                      setX={100}
-                      setY={100}
-                      theNote={noteArray}
-                      innerHeight={innerHeight}
-                      innerWidth={innerWidth}
-                      size={'25'}
-                      octave={'5'}
-                      color={colorArray[Math.floor(Math.random() * 7)]}
-                      speed={Math.floor(Math.random() * 50)}
-                    />
-                  );
-                }
-              })}
-          </svg>
-        ) : (
-          <>
-            <button
-              style={{
-                height: ' 100px',
-                width: '200px',
-                borderRadius: '10px',
-                fontSize: '15px',
-                cursor: 'pointer',
-              }}
-              onClick={() => {
-                setNoteArray(cMaj);
-              }}
-            >
-              Major
-            </button>
-            <button
-              style={{
-                height: ' 100px',
-                width: '200px',
-                borderRadius: '10px',
-                fontSize: '15px',
-                cursor: 'pointer',
-              }}
-              onClick={() => {
-                setNoteArray(cMin);
-              }}
-            >
-              Minor
-            </button>
-            <button
-              style={{
-                height: ' 300px',
-                width: '400px',
-                borderRadius: '15px',
-                fontSize: '50px',
-                cursor: 'pointer',
-              }}
-              onClick={() => {
-                if (noteArray === null) {
-                  setNoteArray(cMaj);
-                }
-                setClicked(!clicked);
-              }}
-            >
-              SET IT OFF
-            </button>
-          </>
-        )}
+      <main
+        style={{ background: 'linear-gradient(#1AFFD3, #9198e5)', zIndex: '2' }}
+        className={styles.main}
+      >
+        <svg style={{ height: '100vh', width: ' 100vw' }}>
+          <defs>
+            <linearGradient id="myGradient" gradientTransform="rotate(90)">
+              <stop offset="5%" stop-color="whitesmoke" />
+              <stop offset="95%" stop-color="purple" />
+            </linearGradient>
+            <linearGradient id="myGradient2" gradientTransform="rotate(90)">
+              <stop offset="5%" stop-color="blue" />
+              <stop offset="95%" stop-color="whitesmoke" />
+            </linearGradient>
+          </defs>
+          <polygon
+            points="50, 300 250,800 -150, 800"
+            fill="url('#myGradient')"
+            stroke="black"
+            strokeWidth={3}
+          />
+          <polygon
+            style={{ border: '2px solid black' }}
+            points={`125, ${String(innerHeight / 1.5)} 325,0 -75, 0`}
+            fill="url('#myGradient2')"
+            stroke="black"
+            strokeWidth={3}
+          />
+          <polygon
+            points={`${String(200 + x1Move)}, 300 ${String(
+              400 + x1Move
+            )},800 ${String(0 + x1Move)}, 800`}
+            fill="url('#myGradient')"
+            stroke="black"
+            strokeWidth={3}
+          />
+          <polygon
+            style={{ border: '2px solid black' }}
+            points="275, 500 475,0 75, 0"
+            fill="url('#myGradient2')"
+            stroke="black"
+            strokeWidth={3}
+          />
+          <polygon
+            points={`${String(350 + x1Move)}, 300 ${String(
+              550 + x1Move
+            )},800 ${String(150 + x1Move)}, 800`}
+            fill="url('#myGradient')"
+            stroke="black"
+            strokeWidth={3}
+          />
+          <polygon
+            points="425, 500 625,0 225, 0"
+            fill="url('#myGradient2')"
+            stroke="black"
+            strokeWidth={3}
+          />
+          <polygon
+            points={`${String(500 + x1Move)}, 300 ${String(
+              700 + x1Move
+            )},800 ${String(300 + x1Move)}, 800`}
+            fill="url('#myGradient')"
+            stroke="black"
+            strokeWidth={3}
+          />
+          <polygon
+            points="575, 500 775,0 375, 0"
+            fill="url('#myGradient2')"
+            stroke="black"
+            strokeWidth={3}
+          />
+          <polygon
+            points={`${String(650 + x1Move)}, 300 ${String(
+              850 + x1Move
+            )},800 ${String(450 + x1Move)}, 800`}
+            fill="url('#myGradient')"
+            stroke="black"
+            strokeWidth={3}
+          />
+          <polygon
+            points="725, 500 925,0 525, 0"
+            fill="url('#myGradient2')"
+            stroke="black"
+            strokeWidth={3}
+          />
+          <polygon
+            points={`${String(800 + x1Move)}, 300 ${String(
+              1000 + x1Move
+            )},800 ${String(600 + x1Move)}, 800`}
+            fill="url('#myGradient')"
+            stroke="black"
+            strokeWidth={3}
+          />
+          <Circle
+            setX={500}
+            setY={300}
+            theNote={cMaj}
+            innerHeight={innerHeight}
+            innerWidth={innerWidth}
+            size={'25'}
+            octave={'3'}
+            color={colorArray[Math.floor(Math.random() * 7)]}
+            speed={Math.floor(Math.random() * 1000)}
+            shadow={{
+              filter: ``,
+            }}
+          />
+        </svg>
       </main>
     </>
   );
